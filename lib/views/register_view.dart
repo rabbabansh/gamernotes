@@ -1,7 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:gamernotes/firebase_options.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({Key? key}) : super(key: key);
@@ -34,63 +32,57 @@ class _RegisterViewState extends State<RegisterView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Register fellow GAMER'),
+        title: const Text('Register'),
         backgroundColor: const Color.fromARGB(255, 7, 255, 28),
         foregroundColor: Colors.black,
       ),
-      body: FutureBuilder(
-        future: Firebase.initializeApp(
-          options: DefaultFirebaseOptions.currentPlatform,
-        ),
-        builder: (context, snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.done:
-              return Column(
-                children: [
-                  TextField(
-                      controller: _email,
-                      autocorrect: false,
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: const InputDecoration(
-                          hintText: 'type out the email bruda man',
-                          labelText: 'Email')),
-                  TextField(
-                    controller: _password,
-                    autocorrect: false,
-                    obscureText: true,
-                    enableSuggestions: false,
-                    decoration: const InputDecoration(
-                        labelText: 'Password', hintText: 'gg ez poggers'),
-                  ),
-                  TextButton(
-                    onPressed: () async {
-                      final email = _email.text;
-                      final password = _password.text;
-                      try {
-                        final userCredential = await FirebaseAuth.instance
-                            .createUserWithEmailAndPassword(
-                                email: email, password: password);
-                        print(userCredential);
-                      } on FirebaseAuthException catch (e) {
-                        if (e.code == 'weak-password') {
-                          print('Weak Password');
-                        } else if (e.code == 'email-already-in-use') {
-                          print("Email Already In Use");
-                        } else if (e.code == 'invalid-email') {
-                          print("Invalid Email");
-                        } else {
-                          print(e.code);
-                        }
-                      }
-                    },
-                    child: const Text("Git Gud"),
-                  ),
-                ],
-              );
-            default:
-              return const Text('gamer not gaming');
-          }
-        },
+      body: Column(
+        children: [
+          TextField(
+              controller: _email,
+              autocorrect: false,
+              keyboardType: TextInputType.emailAddress,
+              decoration: const InputDecoration(
+                  hintText: 'type out the email bruda man',
+                  labelText: 'Email')),
+          TextField(
+            controller: _password,
+            autocorrect: false,
+            obscureText: true,
+            enableSuggestions: false,
+            decoration: const InputDecoration(
+                labelText: 'Password', hintText: 'gg ez poggers'),
+          ),
+          TextButton(
+            onPressed: () async {
+              final email = _email.text;
+              final password = _password.text;
+              try {
+                final userCredential = await FirebaseAuth.instance
+                    .createUserWithEmailAndPassword(
+                        email: email, password: password);
+                print(userCredential);
+              } on FirebaseAuthException catch (e) {
+                if (e.code == 'weak-password') {
+                  print('Weak Password');
+                } else if (e.code == 'email-already-in-use') {
+                  print("Email Already In Use");
+                } else if (e.code == 'invalid-email') {
+                  print("Invalid Email");
+                } else {
+                  print(e.code);
+                }
+              }
+            },
+            child: const Text("Git Gud"),
+          ),
+          TextButton(
+              onPressed: () {
+                Navigator.of(context)
+                    .pushNamedAndRemoveUntil('/login/', (route) => false);
+              },
+              child: const Text('Already a gamer? Login!'))
+        ],
       ),
     );
   }
