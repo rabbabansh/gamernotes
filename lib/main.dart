@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:gamernotes/constants/routes.dart';
 import 'package:gamernotes/firebase_options.dart';
 import 'package:flutter/material.dart';
+import 'package:gamernotes/utilities/show_error_dialog.dart';
 import 'package:gamernotes/views/login_view.dart';
 import 'package:gamernotes/views/register_view.dart';
 import 'package:gamernotes/views/verify_email_view.dart';
@@ -101,25 +102,3 @@ class _NotesViewState extends State<NotesView> {
   }
 }
 
-Future<bool> showLogOutDialog(BuildContext context) {
-  return showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Log Out'),
-          content: const Text("Are you sure you're done GAMING?"),
-          actions: [
-            TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(false);
-                },
-                child: const Text('Cancel')),
-            TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(true);
-                },
-                child: const Text('Log Out')),
-          ],
-        );
-      }).then((value) => value ?? false);
-}
